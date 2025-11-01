@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Détails de la livraison</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Badge info -->
+  <ion-card class="badge-card">
+    <ion-card-content>
+      <div class="badge-header">
+        <img [src]="getImageUrl(livraison.badge_photo)" [alt]="livraison.badge_nom" class="badge-image">
+        <div class="badge-info">
+          <h2>{{ livraison.badge_nom }}</h2>
+          <ion-chip [color]="getStatutColor(livraison.statut)">
+            <ion-label>{{ getStatutLabel(livraison.statut) }}</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Informations client -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="person"></ion-icon>
+        Informations Client
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            <p class="label-text">Nom du client</p>
+            <h3>{{ livraison.client_nom }}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label-text">Contact</p>
+            <h3>
+              <ion-icon name="call" color="primary"></ion-icon>
+              {{ livraison.client_contact }}
+            </h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label-text">Lieu de livraison</p>
+            <h3>
+              <ion-icon name="location" color="danger"></ion-icon>
+              {{ livraison.lieu_livraison }}
+            </h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Détails de la commande -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="cube"></ion-icon>
+        Détails de la commande
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="price-breakdown">
+        <div class="price-row">
+          <span>Quantité:</span>
+          <strong>{{ livraison.quantite }}</strong>
+        </div>
+        <div class="price-row">
+          <span>Prix unitaire:</span>
+          <strong>{{ livraison.prix_badge | number:'1.0-0' }} Ar</strong>
+        </div>
+        <div class="price-row">
+          <span>Sous-total badges:</span>
+          <strong>{{ livraison.prix_badge * livraison.quantite | number:'1.0-0' }} Ar</strong>
+        </div>
+        <div class="price-row">
+          <span>Frais de livraison:</span>
+          <strong>{{ livraison.frais_livraison | number:'1.0-0' }} Ar</strong>
+        </div>
+        <div class="price-row total">
+          <span>Total:</span>
+          <strong class="total-price">{{ livraison.prix_total | number:'1.0-0' }} Ar</strong>
+        </div>
+      </div>
+
+      <ion-item *ngIf="livraison.notes" lines="none" class="notes-item">
+        <ion-label>
+          <p class="label-text">Notes</p>
+          <p class="notes-text">{{ livraison.notes }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Informations système -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="information-circle"></ion-icon>
+        Informations
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            <p class="label-text">Enregistré par</p>
+            <h3>{{ livraison.user_nom }}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label-text">Date d'enregistrement</p>
+            <h3>{{ livraison.created_at | date:'dd/MM/yyyy HH:mm' }}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="livraison.date_livraison">
+          <ion-label>
+            <p class="label-text">Date de livraison</p>
+            <h3 class="success-text">
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+              {{ livraison.date_livraison | date:'dd/MM/yyyy HH:mm' }}
+            </h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

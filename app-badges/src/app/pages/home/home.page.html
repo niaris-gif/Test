@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Uni-Goods
+      <span class="starburst"></span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <!--Bouton livraisons-->
+      <ion-button (click)="goToLivraisons()">
+        <ion-icon name="bicycle" slot="icon-only"></ion-icon>
+      </ion-button>
+      <!-- Bouton notifications -->
+      <ion-button (click)="goToNotifications()">
+        <ion-icon name="notifications" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="lowStockCount > 0" color="danger" class="notification-badge">
+          {{ lowStockCount }}
+        </ion-badge>
+      </ion-button>
+      <!-- Bouton déconnexion -->
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- En-tête utilisateur -->
+  <ion-card class="user-card">
+    <ion-card-content>
+      <div class="user-header">
+        <ion-icon name="person-circle" size="large" color="primary"></ion-icon>
+        <div class="user-info">
+          <h2>Bienvenue, {{ username }}</h2>
+          <ion-badge [color]="isAdmin ? 'primary' : 'secondary'">
+            {{ isAdmin ? 'Administrateur' : 'Secrétaire' }}
+          </ion-badge>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bouton Ajouter -->
+  <ion-button
+    expand="block"
+    (click)="goToAddBadge()"
+    class="ion-margin-vertical"
+    color="success">
+    <ion-icon name="add-circle" slot="start"></ion-icon>
+    Ajouter des produits
+  </ion-button>
+
+  <!-- Liste des badges -->
+  <ion-grid *ngIf="badges.length > 0">
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        size-lg="4"
+        *ngFor="let badge of badges">
+        <ion-card class="badge-card">
+          <!-- Image du badge -->
+          <img
+            [src]="getImageUrl(badge.photo_url)"
+            [alt]="badge.nom"
+            class="badge-image">
+
+          <ion-card-header>
+            <ion-card-title>{{ badge.nom }}</ion-card-title>
+            <ion-card-subtitle>{{ badge.prix | number:'1.0-0' }} Ar</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p class="description">{{ badge.description }}</p>
+
+            <!-- Information stock -->
+            <div class="stock-info">
+              <ion-chip [color]="badge.stock <= 1 ? 'danger' : 'success'">
+                <ion-icon name="cube"></ion-icon>
+                <ion-label>Stock: {{ badge.stock }}</ion-label>
+              </ion-chip>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="action-buttons">
+              <ion-button
+                size="small"
+                fill="outline"
+                color="primary"
+                (click)="enregistrerVente(badge)"
+                [disabled]="badge.stock === 0">
+                <ion-icon name="cart" slot="start"></ion-icon>
+                Vendre
+              </ion-button>
+
+              <ion-button
+                size="small"
+                fill="outline"
+                color="tertiary"
+                (click)="goToEditBadge(badge)">
+                <ion-icon name="create" slot="start"></ion-icon>
+                Modifier
+              </ion-button>
+
+              <ion-button
+                *ngIf="isAdmin"
+                size="small"
+                fill="outline"
+                color="danger"
+                (click)="deleteBadge(badge)">
+                <ion-icon name="trash" slot="start"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Message si pas de badges -->
+  <div *ngIf="badges.length === 0" class="empty-state">
+    <ion-icon name="pricetags-outline" size="large" color="medium"></ion-icon>
+    <h2>Aucun badge disponible</h2>
+    <p>Commencez par ajouter votre premier badge</p>
+    <ion-button (click)="goToAddBadge()" color="primary">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Ajouter un badge
+    </ion-button>
+  </div>
+</ion-content>

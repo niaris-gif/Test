@@ -1,0 +1,67 @@
+<ion-content class="ion-padding login-content">
+  <div class="login-container">
+    <!-- Logo UniGoods -->
+    <div class="logo-section">
+      <div class="logo-container">
+        <img src="assets/logo/uni-goods.svg" alt="Uni-Goods Logo" class="main-logo">
+      </div>
+      <h1 class="app-title">GESTION MATIERE</h1>
+      <p class="app-subtitle">Unique Goods</p>
+    </div>
+
+    <ion-card class="login-card">
+      <ion-card-content>
+        <!-- Nom d'utilisateur -->
+        <ion-item lines="none" class="input-item">
+          <ion-label position="floating" class="input-label">Nom d'utilisateur</ion-label>
+          <ion-input
+            type="text"
+            [(ngModel)]="username"
+            placeholder="admin ou secretaire"
+            class="custom-input"
+            (keyup.enter)="login()">
+          </ion-input>
+        </ion-item>
+
+        <!-- Mot de passe avec bouton voir/cacher -->
+        <ion-item lines="none" class="input-item">
+          <ion-label position="floating" class="input-label">Mot de passe</ion-label>
+          <ion-input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="••••••••"
+            class="custom-input"
+            (keyup.enter)="login()">
+          </ion-input>
+          <ion-button 
+            slot="end" 
+            fill="clear" 
+            (click)="togglePassword()"
+            class="password-toggle">
+            <ion-icon 
+              [name]="showPassword ? 'eye-off' : 'eye'" 
+              color="medium">
+            </ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-button
+          expand="block"
+          (click)="login()"
+          class="login-button"
+          [disabled]="!username || !password">
+          <ion-icon name="log-in" slot="start"></ion-icon>
+          Se connecter
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="info-section">
+      <ion-text color="dark">
+        <p class="info-title">Utilisateurs par défaut:</p>
+        <p class="info-item">• admin </p>
+        <p class="info-item">• secretaire </p>
+      </ion-text>
+    </div>
+  </div>
+</ion-content>

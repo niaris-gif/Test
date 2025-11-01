@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ isEditMode ? 'Modifier le badge' : 'Nouveau produits' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form>
+    <!-- Photo du badge -->
+    <div class="photo-section">
+      <div class="photo-preview" (click)="selectPhotoSource()">
+        <img 
+          *ngIf="imagePreview" 
+          [src]="imagePreview" 
+          alt="Aperçu">
+        <div *ngIf="!imagePreview" class="photo-placeholder">
+          <ion-icon name="camera" size="large"></ion-icon>
+          <p>Ajouter une photo</p>
+        </div>
+      </div>
+      
+      <!-- Bouton pour mobile/web -->
+      <ion-button 
+        expand="block" 
+        fill="outline"
+        (click)="selectPhotoSource()"
+        class="ion-margin-top">
+        <ion-icon name="images" slot="start"></ion-icon>
+        {{ imagePreview ? 'Changer la photo' : 'Sélectionner une photo' }}
+      </ion-button>
+
+      <!-- Input file caché pour le web -->
+      <input 
+        type="file" 
+        accept="image/*" 
+        (change)="onFileSelected($event)"
+        #fileInput
+        style="display: none;">
+    </div>
+
+    <!-- Formulaire -->
+    <ion-card>
+      <ion-card-content>
+        <!-- Nom du badge -->
+        <ion-item>
+          <ion-label position="floating">Nom du produits *</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="nom"
+            name="nom"
+            placeholder="Ex: Badge VIP">
+          </ion-input>
+        </ion-item>
+
+        <!-- Description -->
+        <ion-item>
+          <ion-label position="floating">Description *</ion-label>
+          <ion-textarea 
+            [(ngModel)]="description"
+            name="description"
+            rows="4"
+            placeholder="Description détaillée du produits">
+          </ion-textarea>
+        </ion-item>
+
+        <!-- Stock -->
+        <ion-item>
+          <ion-label position="floating">Stock *</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="stock"
+            name="stock"
+            min="0"
+            placeholder="0">
+          </ion-input>
+        </ion-item>
+
+        <!-- Prix -->
+        <ion-item>
+          <ion-label position="floating">Prix (Ar) *</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="prix"
+            name="prix"
+            min="0"
+            placeholder="0">
+          </ion-input>
+        </ion-item>
+
+        <!-- Informations -->
+        <div class="info-text ion-margin-top">
+          <ion-text color="medium">
+            <p><small>* Champs obligatoires</small></p>
+          </ion-text>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons ion-margin-top">
+          <ion-button 
+            expand="block" 
+            color="primary"
+            (click)="saveBadge()">
+            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+            {{ isEditMode ? 'Enregistrer' : 'Créer le produits' }}
+          </ion-button>
+
+          <ion-button 
+            expand="block" 
+            fill="outline"
+            color="medium"
+            (click)="goBack()">
+            <ion-icon name="close-circle" slot="start"></ion-icon>
+            Annuler
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

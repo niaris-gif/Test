@@ -1,0 +1,39 @@
+# Dépendances
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Uploads (sauf .gitkeep)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Certificats et clés (sécurité)
+*.pem
+*.key
+*.cert
+*.p12
+*.keystore
+
+# Autres
+tmp/
+temp/
+.cache/

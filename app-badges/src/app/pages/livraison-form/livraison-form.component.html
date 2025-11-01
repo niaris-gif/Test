@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Nouvelle Livraison</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Information du badge -->
+  <ion-card class="badge-info-card" *ngIf="badge">
+    <ion-card-content>
+      <div class="badge-info">
+        <img [src]="getImageUrl(badge.photo_url)" [alt]="badge.nom" class="badge-thumb">
+        <div class="badge-details">
+          <h3>{{ badge.nom }}</h3>
+          <p>{{ badge.description }}</p>
+          <ion-chip color="primary">
+            <ion-label>Quantité: {{ quantite }}</ion-label>
+          </ion-chip>
+          <ion-chip color="success">
+            <ion-label>Prix unitaire: {{ prixBadge | number:'1.0-0' }} Ar</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Formulaire de livraison -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="location"></ion-icon>
+        Informations de livraison
+      </ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Nom du client -->
+      <ion-item>
+        <ion-label position="floating">Nom du client *</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="clientNom"
+          placeholder="Ex: Jean Dupont">
+        </ion-input>
+      </ion-item>
+
+      <!-- Contact -->
+      <ion-item>
+        <ion-label position="floating">Contact *</ion-label>
+        <ion-input
+          type="tel"
+          [(ngModel)]="clientContact"
+          placeholder="Ex: 034 12 345 67">
+        </ion-input>
+      </ion-item>
+
+      <!-- Lieu de livraison -->
+      <ion-item>
+        <ion-label position="floating">Lieu de livraison *</ion-label>
+        <ion-textarea
+          [(ngModel)]="lieuLivraison"
+          rows="3"
+          placeholder="Adresse complète de livraison">
+        </ion-textarea>
+      </ion-item>
+
+      <!-- Prix du badge (lecture seule) -->
+      <ion-item>
+        <ion-label position="floating">Prix badge (Ar)</ion-label>
+        <ion-input
+          type="number"
+          [(ngModel)]="prixBadge"
+          readonly>
+        </ion-input>
+      </ion-item>
+
+      <!-- Frais de livraison -->
+      <ion-item>
+        <ion-label position="floating">Frais de livraison (Ar)</ion-label>
+        <ion-input
+          type="number"
+          [(ngModel)]="fraisLivraison"
+          (ionChange)="onFraisChange()"
+          min="0"
+          placeholder="0">
+        </ion-input>
+      </ion-item>
+
+      <!-- Prix total calculé -->
+      <ion-item lines="none">
+        <ion-label>
+          <h2>Prix Total</h2>
+          <p>{{ quantite }} × {{ prixBadge | number:'1.0-0' }} + {{ fraisLivraison | number:'1.0-0' }} (frais)</p>
+        </ion-label>
+        <ion-note slot="end" color="success" class="price-total">
+          <strong>{{ prixTotal | number:'1.0-0' }} Ar</strong>
+        </ion-note>
+      </ion-item>
+
+      <!-- Notes optionnelles -->
+      <ion-item>
+        <ion-label position="floating">Notes (optionnel)</ion-label>
+        <ion-textarea
+          [(ngModel)]="notes"
+          rows="3"
+          placeholder="Informations supplémentaires...">
+        </ion-textarea>
+      </ion-item>
+
+      <!-- Information -->
+      <div class="info-text ion-margin-top">
+        <ion-text color="medium">
+          <p><small>* Champs obligatoires</small></p>
+        </ion-text>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="action-buttons ion-margin-top">
+        <ion-button
+          expand="block"
+          color="success"
+          (click)="saveLivraison()">
+          <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+          Enregistrer la livraison
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="medium"
+          (click)="goBack()">
+          <ion-icon name="close-circle" slot="start"></ion-icon>
+          Annuler
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

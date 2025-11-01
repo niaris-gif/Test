@@ -1,0 +1,98 @@
+.badge-info-card {
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+
+  .badge-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    .badge-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .badge-details {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 8px;
+        font-size: 13px;
+        opacity: 0.9;
+      }
+
+      ion-chip {
+        --background: rgba(255, 255, 255, 0.2);
+        --color: white;
+        font-size: 12px;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+ion-card {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+ion-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+ion-item {
+  margin-bottom: 16px;
+  --border-radius: 8px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.price-total {
+  font-size: 20px;
+}
+
+.info-text {
+  text-align: center;
+
+  p {
+    margin: 8px 0;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  ion-button {
+    margin: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .action-buttons {
+    flex-direction: row;
+
+    ion-button {
+      flex: 1;
+    }
+  }
+}

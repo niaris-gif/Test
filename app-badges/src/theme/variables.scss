@@ -1,0 +1,118 @@
+:root {
+  /** Couleurs principales inspirées du logo **/
+  --ion-color-primary: #e8a598;
+  --ion-color-primary-rgb: 232, 165, 152;
+  --ion-color-primary-contrast: #1a1a1a;
+  --ion-color-primary-contrast-rgb: 26, 26, 26;
+  --ion-color-primary-shade: #cc9186;
+  --ion-color-primary-tint: #eaafa2;
+
+  /** Couleur secondaire (plus foncée) **/
+  --ion-color-secondary: #d4897a;
+  --ion-color-secondary-rgb: 212, 137, 122;
+  --ion-color-secondary-contrast: #1a1a1a;
+  --ion-color-secondary-contrast-rgb: 26, 26, 26;
+  --ion-color-secondary-shade: #bb796b;
+  --ion-color-secondary-tint: #d89587;
+
+  /** Couleur tertiaire (rose pâle) **/
+  --ion-color-tertiary: #f5d5ce;
+  --ion-color-tertiary-rgb: 245, 213, 206;
+  --ion-color-tertiary-contrast: #1a1a1a;
+  --ion-color-tertiary-contrast-rgb: 26, 26, 26;
+  --ion-color-tertiary-shade: #d8bbb5;
+  --ion-color-tertiary-tint: #f6d9d3;
+
+  /** Couleur success (vert doux compatible) **/
+  --ion-color-success: #94c9a9;
+  --ion-color-success-rgb: 148, 201, 169;
+  --ion-color-success-contrast: #1a1a1a;
+  --ion-color-success-contrast-rgb: 26, 26, 26;
+  --ion-color-success-shade: #82b194;
+  --ion-color-success-tint: #9fceb2;
+
+  /** Couleur warning (orange pêche) **/
+  --ion-color-warning: #f4a582;
+  --ion-color-warning-rgb: 244, 165, 130;
+  --ion-color-warning-contrast: #1a1a1a;
+  --ion-color-warning-contrast-rgb: 26, 26, 26;
+  --ion-color-warning-shade: #d79172;
+  --ion-color-warning-tint: #f5ae8f;
+
+  /** Couleur danger (rouge doux) **/
+  --ion-color-danger: #e07a5f;
+  --ion-color-danger-rgb: 224, 122, 95;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c56b54;
+  --ion-color-danger-tint: #e3876f;
+
+  /** Couleurs de fond **/
+  --ion-background-color: #fef6f4;
+  --ion-background-color-rgb: 254, 246, 244;
+
+  --ion-text-color: #1a1a1a;
+  --ion-text-color-rgb: 26, 26, 26;
+
+  /** Couleur des cartes **/
+  --ion-card-background: #ffffff;
+  
+  /** Couleurs neutres **/
+  --ion-color-light: #f8f8f8;
+  --ion-color-light-rgb: 248, 248, 248;
+  --ion-color-light-contrast: #1a1a1a;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+
+  --ion-color-medium: #a8a8a8;
+  --ion-color-medium-rgb: 168, 168, 168;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-shade: #949494;
+  --ion-color-medium-tint: #b1b1b1;
+
+  --ion-color-dark: #1a1a1a;
+  --ion-color-dark-rgb: 26, 26, 26;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-shade: #171717;
+  --ion-color-dark-tint: #313131;
+}
+
+/** Mode sombre (optionnel) **/
+@media (prefers-color-scheme: dark) {
+  body {
+    --ion-background-color: #2a1e1b;
+    --ion-background-color-rgb: 42, 30, 27;
+    
+    --ion-text-color: #fef6f4;
+    --ion-text-color-rgb: 254, 246, 244;
+    
+    --ion-card-background: #3a2e2b;
+  }
+}
+
+/** Styles personnalisés globaux **/
+* {
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+ion-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(232, 165, 152, 0.15);
+}
+
+ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+ion-chip {
+  font-weight: 600;
+  border-radius: 20px;
+}

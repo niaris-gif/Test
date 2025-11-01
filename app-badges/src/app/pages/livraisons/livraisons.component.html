@@ -1,0 +1,190 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Livraisons</ion-title>
+  </ion-toolbar>
+
+  <!-- Barre de statistiques -->
+  <ion-toolbar *ngIf="stats">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <ion-icon name="cube" color="medium"></ion-icon>
+        <div>
+          <small>Total</small>
+          <strong>{{ stats.total }}</strong>
+        </div>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="time" color="warning"></ion-icon>
+        <div>
+          <small>En attente</small>
+          <strong>{{ stats.en_attente }}</strong>
+        </div>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="bicycle" color="primary"></ion-icon>
+        <div>
+          <small>En cours</small>
+          <strong>{{ stats.en_cours }}</strong>
+        </div>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        <div>
+          <small>Livrées</small>
+          <strong>{{ stats.livrees }}</strong>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Filtre par statut -->
+  <ion-card class="filter-card">
+    <ion-card-content>
+      <ion-segment [(ngModel)]="filtreStatut" (ionChange)="onFiltreChange($event)" mode="md">
+        <ion-segment-button value="tous">
+          <ion-label>Tous</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="en_attente">
+          <ion-label>En attente</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="en_cours">
+          <ion-label>En cours</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="livree">
+          <ion-label>Livrées</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Liste des livraisons -->
+  <div *ngIf="livraisonsFiltrees.length > 0">
+    <ion-card *ngFor="let livraison of livraisonsFiltrees" class="livraison-card">
+      <ion-card-header>
+        <div class="card-header-content">
+          <div class="badge-info">
+            <img 
+              [src]="getImageUrl(livraison.badge_photo)" 
+              [alt]="livraison.badge_nom"
+              class="badge-thumb">
+            <div class="badge-text">
+              <ion-card-title>{{ livraison.badge_nom }}</ion-card-title>
+              <ion-card-subtitle>
+                <ion-icon name="person"></ion-icon>
+                {{ livraison.client_nom }}
+              </ion-card-subtitle>
+            </div>
+          </div>
+          
+          <!-- Statut badge -->
+          <ion-chip 
+            [color]="getStatutColor(livraison.statut)"
+            class="statut-chip">
+            <ion-icon [name]="getStatutIcon(livraison.statut)"></ion-icon>
+            <ion-label>{{ getStatutLabel(livraison.statut) }}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Informations principales -->
+        <div class="info-row">
+          <ion-icon name="call" color="primary"></ion-icon>
+          <span style="color: gainsboro;">{{ livraison.client_contact }}</span>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="location" color="danger"></ion-icon>
+          <span style="color: gainsboro;">{{ livraison.lieu_livraison }}</span>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="cube" color="medium"></ion-icon>
+          <span style="color: gainsboro;">Quantité: {{ livraison.quantite }}</span>
+        </div>
+
+        <!-- Informations de prix -->
+        <div class="price-info">
+          <div class="price-row">
+            <span>Prix badges:</span>
+            <strong>{{ livraison.prix_badge * livraison.quantite | number:'1.0-0' }} Ar</strong>
+          </div>
+          <div class="price-row">
+            <span>Frais livraison:</span>
+            <strong>{{ livraison.frais_livraison | number:'1.0-0' }} Ar</strong>
+          </div>
+          <div class="price-row total">
+            <span>Total:</span>
+            <strong class="total-price">{{ livraison.prix_total | number:'1.0-0' }} Ar</strong>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div class="date-info">
+          <ion-icon name="calendar" color="medium"></ion-icon>
+          <small>{{ livraison.created_at | date:'dd/MM/yyyy HH:mm' }}</small>
+          <span *ngIf="livraison.date_livraison" class="delivered-date">
+            • Livrée le {{ livraison.date_livraison | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="action-buttons">
+          <ion-button
+            size="small"
+            fill="outline"
+            color="primary"
+            (click)="voirDetails(livraison)">
+            <ion-icon name="eye" slot="start"></ion-icon>
+            Détails
+          </ion-button>
+
+          <ion-button
+            size="small"
+            fill="outline"
+            [color]="getStatutColor(livraison.statut)"
+            (click)="changerStatut(livraison)">
+            <ion-icon name="swap-horizontal" slot="start"></ion-icon>
+            Statut
+          </ion-button>
+
+          <ion-button
+            size="small"
+            fill="outline"
+            color="danger"
+            (click)="deleteLivraison(livraison)">
+            <ion-icon name="trash" slot="start"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Message si pas de livraisons -->
+  <div *ngIf="livraisonsFiltrees.length === 0" class="empty-state">
+    <ion-icon name="bicycle-outline" size="large" color="medium"></ion-icon>
+    <h2>Aucune livraison</h2>
+    <p *ngIf="filtreStatut !== 'tous'">
+      Aucune livraison avec le statut "{{ getStatutLabel(filtreStatut) }}"
+    </p>
+    <p *ngIf="filtreStatut === 'tous'">
+      Les livraisons apparaîtront ici après avoir enregistré des ventes
+    </p>
+    <ion-button (click)="goBack()" color="success">
+      <ion-icon name="home" slot="start"></ion-icon>
+      Retour à l'accueil
+    </ion-button>
+  </div>
+</ion-content>

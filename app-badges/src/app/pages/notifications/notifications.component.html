@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="notifications"></ion-icon>
+      Alertes Stock
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- En-tête alerte -->
+  <ion-card color="warning" class="alert-card">
+    <ion-card-content>
+      <div class="alert-header">
+        <ion-icon name="warning" size="large"></ion-icon>
+        <div>
+          <h2>{{ lowStockBadges.length }} badge(s) en rupture</h2>
+          <p>Stock de 1 unité ou moins<</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Liste des badges en rupture -->
+  <div *ngIf="lowStockBadges.length > 0">
+    <ion-list>
+      <ion-item *ngFor="let badge of lowStockBadges" class="notification-item">
+        <ion-thumbnail slot="start">
+          <img [src]="getImageUrl(badge.photo_url)" [alt]="badge.nom">
+        </ion-thumbnail>
+
+        <ion-label>
+          <h2>{{ badge.nom }}</h2>
+          <p>{{ badge.description }}</p>
+          <ion-chip 
+            [color]="badge.stock === 0 ? 'danger' : 'warning'" 
+            class="stock-chip">
+            <ion-icon name="alert-circle"></ion-icon>
+            <ion-label>
+              {{ badge.stock === 0 ? 'Rupture de stock' : 'Stock: ' + badge.stock }}
+            </ion-label>
+          </ion-chip>
+        </ion-label>
+
+        <ion-button 
+          slot="end" 
+          fill="outline" 
+          color="primary"
+          (click)="goToEditBadge(badge)">
+          <ion-icon name="create" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Message si aucune alerte -->
+  <div *ngIf="lowStockBadges.length === 0" class="empty-state">
+    <ion-icon name="checkmark-circle" size="large" color="success"></ion-icon>
+    <h2>Aucune alerte</h2>
+    <p>Tous les badges ont un stock suffisant</p>
+    <ion-button (click)="goBack()" color="primary">
+      <ion-icon name="home" slot="start"></ion-icon>
+      Retour à l'accueil
+    </ion-button>
+  </div>
+</ion-content>

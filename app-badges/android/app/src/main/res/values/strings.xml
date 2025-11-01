@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Badge Ketaka</string>
+    <string name="title_activity_main">Badge Ketaka</string>
+    <string name="package_name">com.badge.ketaka</string>
+    <string name="custom_url_scheme">com.badge.ketaka</string>
+</resources>
