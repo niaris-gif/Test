@@ -1,0 +1,50 @@
+# Dépendances
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist
+www
+.angular
+
+# Cache
+.cache
+.npm
+.eslintcache
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README.md
+LICENSE
+
+# Tests
+coverage
+.nyc_output
+*.spec.ts
+*.test.ts
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
