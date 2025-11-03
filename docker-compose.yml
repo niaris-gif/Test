@@ -1,7 +1,5 @@
-version: '3.8'
-
+# Base de données PostgreSQL
 services:
-  # Base de données PostgreSQL
   database:
     image: postgres:15-alpine
     container_name: badge-db
@@ -9,10 +7,11 @@ services:
     environment:
       POSTGRES_DB: gestion_badges
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+      # Créer ce fichier si besoin d'initialisation SQL
+      # - ./backend-badges/init-db.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     networks:
@@ -26,7 +25,7 @@ services:
   # Backend API
   backend:
     build:
-      context: ./backend
+      context: ./backend-badges
       dockerfile: Dockerfile
     container_name: badge-backend
     restart: unless-stopped
@@ -37,11 +36,13 @@ services:
       DB_PORT: 5432
       DB_NAME: gestion_badges
       DB_USER: postgres
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_IN: 7d
+      DOMAIN: ${DOMAIN:-votre-domaine.com}
+      EMAIL: ${EMAIL:-samisoatt@gmail.com}
     volumes:
-      - ./backend/uploads:/app/uploads
+      - ./backend-badges/uploads:/app/uploads
     ports:
       - "3000:3000"
     depends_on:
@@ -50,10 +51,11 @@ services:
     networks:
       - badge-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
 
   # Frontend
   frontend:
@@ -63,43 +65,14 @@ services:
     container_name: badge-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - backend
     networks:
       - badge-network
-
-  # Nginx Reverse Proxy avec SSL
-  nginx-proxy:
-    image: nginx:alpine
-    container_name: badge-nginx-proxy
-    restart: unless-stopped
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-      - certbot-data:/var/www/certbot
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - badge-network
-
-  # Certbot pour SSL/TLS gratuit
-  certbot:
-    image: certbot/certbot
-    container_name: badge-certbot
-    volumes:
-      - certbot-data:/var/www/certbot
-      - ./nginx/ssl:/etc/letsencrypt
-    command: certonly --webroot --webroot-path=/var/www/certbot --email votre-email@example.com --agree-tos --no-eff-email -d votre-domaine.com
 
 volumes:
   postgres_data:
-    driver: local
-  certbot-data:
     driver: local
 
 networks:
