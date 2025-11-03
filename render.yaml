@@ -1,0 +1,79 @@
+services:
+  # Service Backend
+  - type: web
+    name: badge-ketaka-backend
+    runtime: docker
+    dockerfilePath: ./backend-badges/Dockerfile
+    dockerContext: ./backend-badges
+    plan: free
+    envVars:
+      # Configuration du serveur
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      
+      # Configuration PostgreSQL (à connecter avec la base de données)
+      - key: DB_HOST
+        fromDatabase:
+          name: badge-ketaka-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: badge-ketaka-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: badge-ketaka-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: badge-ketaka-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: badge-ketaka-db
+          property: password
+      
+      # Configuration JWT (À DÉFINIR MANUELLEMENT DANS RENDER DASHBOARD)
+      - key: JWT_SECRET
+        generateValue: true  # Render génère automatiquement un secret fort
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      
+      # Configuration Upload
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: MAX_FILE_SIZE
+        value: 5242880
+      
+      # Seuil de stock
+      - key: LOW_STOCK_THRESHOLD
+        value: 1
+      
+      # CORS Origins (mettre l'URL du frontend une fois déployé)
+      - key: ALLOWED_ORIGINS
+        value: https://badge-ketaka-frontend.onrender.com
+    
+    healthCheckPath: /
+
+  # Service Frontend
+  - type: web
+    name: badge-ketaka-frontend
+    runtime: docker
+    dockerfilePath: ./app-badges/Dockerfile
+    dockerContext: ./app-badges
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # URL du backend (sera créé automatiquement)
+      - key: VITE_API_URL
+        value: https://badge-ketaka-backend.onrender.com
+
+# Base de données PostgreSQL
+databases:
+  - name: badge-ketaka-db
+    databaseName: gestion_badges
+    user: badge_user
+    plan: free
