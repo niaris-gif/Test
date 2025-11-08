@@ -125,8 +125,8 @@ CREATE TRIGGER update_livraisons_updated_at
 -- Insérer les utilisateurs par défaut (mot de passe: password123)
 -- Hash généré avec: bcrypt.hash('password123', 10)
 INSERT INTO users (username, password, role) VALUES 
-    ('admin', '$2a$10$YourHashedPasswordHereForAdmin', 'admin'),
-    ('secretaire', '$2a$10$YourHashedPasswordHereForSecretaire', 'secretaire')
+    ('admin', '$2a$10$YixBaVEYiEzNt9KN8LCBmeC3pj6GVRM1BPrRkL1v2gHRN8TZhFJQG', 'admin'),
+    ('secretaire', '$2a$10$YixBaVEYiEzNt9KN8LCBmeC3pj6GVRM1BPrRkL1v2gHRN8TZhFJQG', 'secretaire')
 ON CONFLICT (username) DO NOTHING;
 
 -- Insérer quelques badges de démonstration (optionnel)
