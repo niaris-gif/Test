@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { LoginResponse, User } from '../models/badge.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
   
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -28,6 +29,7 @@ export class AuthService {
     this.currentUserSubject.next(null);
     
     console.log('📡 Envoi requête login pour:', username);
+    console.log('🌐 URL API:', this.apiUrl);
     
     return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, { 
       username, 
