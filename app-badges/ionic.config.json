@@ -1,5 +1,14 @@
 {
-  "name": "ionic-app-base",
-  "integrations": {},
-  "type": "angular"
+  "name": "badge-ketaka-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://localhost:3000/api"
+    }
+  ]
 }
