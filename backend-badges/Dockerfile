@@ -22,6 +22,11 @@ FROM base AS dependencies
 
 # Copier les fichiers de dépendances
 COPY package*.json ./
+COPY prisma ./prisma/
+
+# Installer TOUTES les dépendances (incluant Prisma CLI)
+RUN npm ci --ignore-scripts && \
+    npm cache clean --force
 
 # Installer les dépendances de production
 RUN npm ci --only=production --ignore-scripts && \
@@ -31,7 +36,7 @@ RUN npm ci --only=production --ignore-scripts && \
 RUN cp -R node_modules /tmp/node_modules
 
 # Installer toutes les dépendances (dev inclus) pour le build
-RUN npm ci --ignore-scripts
+RUN npm ci --ignore-scripts 
 
 # ==========================================
 # Stage 3: Build (si vous avez du TypeScript)
@@ -66,6 +71,9 @@ WORKDIR /app
 
 # Copier les dépendances de production depuis le stage dependencies
 COPY --from=dependencies /tmp/node_modules ./node_modules
+
+# Copier le schéma et les migrations Prisma
+COPY --chown=nodejs:nodejs prisma ./prisma
 
 # Copier le code source
 COPY --chown=nodejs:nodejs . .
