@@ -14,7 +14,13 @@ const PORT = process.env.PORT || 3000;
 // Configuration CORS dynamique
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:8100', 'capacitor://localhost', 'ionic://localhost'];
+  : [
+    'https://badge-ketaka-frontend.onrender.com',  
+    'http://localhost:8100',
+    'http://localhost:4200',
+    'capacitor://localhost',
+    'ionic://localhost'
+  ];
 
 // Middleware
 app.use(cors({
@@ -28,7 +34,9 @@ app.use(cors({
       callback(new Error('Non autorisé par CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-type', 'Authorization']
 }));
 
 app.use(express.json());
