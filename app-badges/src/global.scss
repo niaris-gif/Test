@@ -43,3 +43,26 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+ion-input {
+  --color: #ffffff !important;
+  color: #ffffff !important;
+  
+  input {
+    color: #ffffff !important;
+  }
+}
+
+ion-textarea {
+  --color: #ffffff !important;
+  color: #ffffff !important;
+  
+  textarea {
+    color: #ffffff !important;
+  }
+}
+
+ion-label {
+  --color: #ffffff !important;
+  color: #ffffff !important;
+}
+
