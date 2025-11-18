@@ -49,6 +49,15 @@ ion-card {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
+ion-input {
+  --color: #ffffff !important;
+  color: #ffffff !important;
+  
+  input {
+    color: #ffffff !important;
+  }
+}
+
 ion-item {
   margin-bottom: 16px;
   --border-radius: 8px;
