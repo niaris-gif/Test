@@ -301,6 +301,65 @@ router.put('/:id', verifyToken, async (req, res) => {
 });
 
 /**
+ * PUT /api/livraisons/:id/annuler
+ * Annuler une livraison et remettre le stock
+ */
+router.put('/:id/annuler', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Récupérer la livraison
+    const livraisonResult = await query(
+      'SELECT * FROM livraisons WHERE id = $1',
+      [id]
+    );
+
+    if (livraisonResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Livraison non trouvée'
+      });
+    }
+
+    const livraison = livraisonResult.rows[0];
+
+    // Vérifier que la livraison n'est pas déjà annulée
+    if (livraison.statut === 'annulee') {
+      return res.status(400).json({
+        error: 'Livraison déjà annulée'
+      });
+    }
+
+    // ✅ Remettre le stock du badge
+    await query(
+      'UPDATE badges SET stock = stock + $1 WHERE id = $2',
+      [livraison.quantite, livraison.badge_id]
+    );
+
+    // Mettre à jour le statut de la livraison
+    const result = await query(
+      `UPDATE livraisons
+       SET statut = 'annulee',
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $1
+       RETURNING *`,
+      [id]
+    );
+
+    res.json({
+      message: 'Livraison annulée et stock remis',
+      livraison: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Erreur annulation livraison:', error);
+    res.status(500).json({
+      error: 'Erreur serveur',
+      message: error.message
+    });
+  }
+});
+
+/**
  * DELETE /api/livraisons/:id
  * Supprimer une livraison
  */

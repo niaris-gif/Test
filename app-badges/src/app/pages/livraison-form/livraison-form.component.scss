@@ -1,3 +1,46 @@
+ion-item {
+  --background: #ffffff !important;
+  --color: #1a1a1a !important;
+  
+  &.input-item {
+    --background: #ffffff !important;
+    background: #ffffff !important;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    
+    &.item-has-focus {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 4px rgba(232, 165, 152, 0.1);
+    }
+  }
+}
+
+// Labels bien visibles
+ion-label {
+  color: #666666 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+
+// Inputs avec fond blanc et texte noir
+ion-input,
+ion-textarea {
+  --background: #ffffff !important;
+  --color: #1a1a1a !important;
+  --placeholder-color: #999999 !important;
+  --placeholder-opacity: 1 !important;
+  
+  input,
+  textarea {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #1a1a1a !important;
+    font-weight: 500 !important;
+  }
+}
+
 .badge-info-card {
   margin-bottom: 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

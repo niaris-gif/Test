@@ -144,8 +144,8 @@ export class LivraisonsComponent implements OnInit {
   }
 
   /**
-   * Changer le statut d'une livraison
-   */
+ * Changer le statut d'une livraison
+ */
   async changerStatut(livraison: Livraison) {
     const alert = await this.alertController.create({
       header: 'Changer le statut',
@@ -170,7 +170,7 @@ export class LivraisonsComponent implements OnInit {
           checked: livraison.statut === 'livree'
         },
         {
-          label: 'Annulée',
+          label: '❌ Annuler (remettre le stock)',
           type: 'radio',
           value: 'annulee',
           checked: livraison.statut === 'annulee'
@@ -185,15 +185,37 @@ export class LivraisonsComponent implements OnInit {
           text: 'Confirmer',
           handler: (statut) => {
             if (statut !== livraison.statut) {
-              this.updateStatut(livraison.id!, statut);
+              // ✅ Si annulation, utiliser la route spéciale
+              if (statut === 'annulee') {
+              this.annulerLivraison(livraison.id!);
+              } else {
+                this.updateStatut(livraison.id!, statut);
+              }
             }
           }
         }
       ]
-    });
+  });
 
-    await alert.present();
-  }
+  await alert.present();
+}
+
+/**
+ * Annuler une livraison (remet le stock)
+ */
+  annulerLivraison(id: number) {
+    this.livraisonService.annulerLivraison(id).subscribe({
+      next: (response) => {
+        this.showToast('Livraison annulée et stock remis', 'success');
+        this.loadLivraisons();
+        this.loadStats();
+      },
+      error: (error) => {
+        console.error('Erreur annulation:', error);
+        this.showToast('Erreur lors de l\'annulation', 'danger');
+      }
+  });
+}
 
   /**
    * Mettre à jour le statut

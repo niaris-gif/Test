@@ -61,6 +61,13 @@ export class LivraisonService {
   }
 
   /**
+ * Annuler une livraison
+ */
+  annulerLivraison(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/annuler`, {});
+}
+
+  /**
    * Supprimer une livraison
    */
   deleteLivraison(id: number): Observable<any> {
