@@ -24,15 +24,13 @@ ion-label {
 }
 
 // Inputs avec fond blanc et texte noir
-ion-input,
-ion-textarea {
+ion-input {
   --background: #ffffff !important;
   --color: #1a1a1a !important;
   --placeholder-color: #999999 !important;
   --placeholder-opacity: 1 !important;
   
-  input,
-  textarea {
+  input {
     background: #ffffff !important;
     color: #1a1a1a !important;
     opacity: 1 !important;
