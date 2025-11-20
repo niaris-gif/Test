@@ -62,11 +62,11 @@
       <!-- Lieu de livraison -->
       <ion-item class="input-item">
         <ion-label position="floating">Lieu de livraison *</ion-label>
-        <ion-input
+        <ion-textarea
           [(ngModel)]="lieuLivraison"
           rows="3"
           placeholder="Adresse complète de livraison">
-        </ion-input>
+        </ion-textarea>
       </ion-item>
 
       <!-- Prix du badge (lecture seule) -->
@@ -105,11 +105,11 @@
       <!-- Notes optionnelles -->
       <ion-item class="input-item">
         <ion-label position="floating">Notes (optionnel)</ion-label>
-        <ion-input
+        <ion-textarea
           [(ngModel)]="notes"
           rows="3"
           placeholder="Informations supplémentaires...">
-        </ion-input>
+        </ion-textarea>
       </ion-item>
 
       <!-- Information -->
